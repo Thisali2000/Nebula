@@ -68,8 +68,9 @@
                     <div class="col-sm-10">
                         <select class="form-select" id="status" name="status" required>
                             <option value="">Select Status</option>
-                            <option value="open">Open</option>
-                            <option value="closed">Closed</option>
+                            <option value="upcoming">Upcoming</option>
+                            <option value="active">Active</option>
+                            <option value="completed">Completed</option>
                         </select>
                     </div>
                 </div>
@@ -220,7 +221,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     console.log('Course data received:', data);
                     if (data.success && data.course) {
                         let specializations = [];
-                        
+
                         // Handle different formats of specializations
                         if (data.course.specializations) {
                             if (typeof data.course.specializations === 'string') {
@@ -234,10 +235,10 @@ document.addEventListener('DOMContentLoaded', function() {
                                 specializations = data.course.specializations;
                             }
                         }
-                        
+
                         // Filter out empty/null values
                         specializations = specializations.filter(spec => spec && spec.trim() !== '');
-                        
+
                         if (specializations.length > 0) {
                             courseSpecializations = specializations;
                             let options = '<option value="" selected disabled>Select Specialization</option>';
@@ -417,7 +418,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (specializationRow && specializationRow.style.display !== 'none') {
             specialization = document.getElementById('specialization_select').value || '';
         }
-        
+
         // Validate required selections
         if (!moduleId || !moduleName || !semester) {
             window.showToast('Please select semester, module, and type.', 'danger');
@@ -521,7 +522,7 @@ semesterForm.addEventListener('submit', function(e) {
         status: document.getElementById('status').value,
         _token: '{{ csrf_token() }}'
     };
-    
+
     // Validate CSRF token
     if (!formData._token) {
         showToast('CSRF token is missing. Please refresh the page and try again.', 'danger');
@@ -556,7 +557,7 @@ semesterForm.addEventListener('submit', function(e) {
     const submitBtn = document.getElementById('submitBtn');
     const submitText = document.getElementById('submitText');
     const submitSpinner = document.getElementById('submitSpinner');
-    
+
     submitBtn.disabled = true;
     submitText.textContent = 'Creating Semester...';
     submitSpinner.style.display = 'inline-block';
@@ -574,7 +575,7 @@ semesterForm.addEventListener('submit', function(e) {
     .then(async response => {
         console.log('Response status:', response.status);
         console.log('Response headers:', response.headers);
-        
+
         let data;
         try {
             data = await response.json();
@@ -599,7 +600,7 @@ semesterForm.addEventListener('submit', function(e) {
             submitBtn.disabled = false;
             submitText.textContent = 'Create Semester';
             submitSpinner.style.display = 'none';
-            
+
             if (data.success) {
                 showToast(data.message || 'Semester created successfully!', 'success');
                 setTimeout(() => {
@@ -614,7 +615,7 @@ semesterForm.addEventListener('submit', function(e) {
             submitBtn.disabled = false;
             submitText.textContent = 'Create Semester';
             submitSpinner.style.display = 'none';
-            
+
             // Already handled above, but fallback here
             console.error('Error:', error);
             showToast(error.message || 'An unexpected error occurred.', 'danger');
