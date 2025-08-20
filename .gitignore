@@ -16,3 +16,12 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+
+/storage/*.key
+/storage/*.log
+/storage/*.cache
+/storage/framework/cache/*
+/storage/framework/sessions/*
+/storage/framework/views/*
+/storage/framework/testing/*
+/storage/logs/*
